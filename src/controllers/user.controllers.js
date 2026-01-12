@@ -1,8 +1,8 @@
 import {asyncHandler} from "../utils/asyncHandler.js"
-import {ApiError} from "../utils/ApiError"
+import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
-import uploadOnCloudinary from '../utils/cloudinary.js'
-import { use } from "react"
+import {uploadOnCloudinary} from '../utils/cloudinary.js'
+// import { use } from "react"
 import {ApiResponse} from "../utils/ApiResponse.js"
 
 const registerUser = asyncHandler( async(req, res) => {
@@ -25,7 +25,7 @@ const registerUser = asyncHandler( async(req, res) => {
         throw new ApiError(400, "All Fiels are required")
     }
     
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{username}, {email}]
     })
     if(existedUser){
@@ -55,7 +55,7 @@ const registerUser = asyncHandler( async(req, res) => {
         username: username.toLowerCase()  
     })
 
-    const createdUser = await User.findById(user._id).select("-password -    refreshToken")
+    const createdUser = await User.findById(user._id).select("-password -refreshToken")
 
     if(!createdUser){
         throw new ApiError(500, "Something went wrong while registering the User")
