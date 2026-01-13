@@ -15,7 +15,8 @@ const uploadOnCloudinary = async (localFilePath) => {
             resource_type: "auto"
         })
         // file has been uploaded on cloudinary
-        console.log("file is uploaded on clouinary", response.url)
+        fs.unlinkSync(localFilePath)//remove the locally saved temporary file as the ipload operation got failed
+        // console.log("file is uploaded on clouinary", response.url)
         return response;
 
     } catch (error) {
@@ -24,4 +25,4 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
-export {uploadOnCloudinary}
+export default uploadOnCloudinary;
